@@ -84,11 +84,11 @@ The parameters \code{ub1} and \code{ub2} are not translated since it seems to ha
 }
 \examples{
 \dontshow{if (rjd3jars::check_java_version(silent = TRUE)) withAutoprint(\{ # examplesIf}
+\donttest{
 y <- rjd3toolkit::ABS$X0.2.09.10.M
 model_v3 <- rjd3x13::x13(y)
 model_v2 <- as_rjd2(model_v3)
 
-\donttest{
 # Specify the modelling context with user-defined variables
 regs_td <- rjd3toolkit::td(
   s = y,

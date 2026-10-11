@@ -20,6 +20,7 @@
 #' - `result`: The converted object in the 'rjd3' format.
 #'
 #' @examplesIf rjd3jars::check_java_version(silent = TRUE)
+#' \donttest{
 #' y <- RJDemetra::ipi_c_eu[, "FR"]
 #' model_v2 <- RJDemetra::x13(y, spec = "RSA5c")
 #' model_v3 <- as_rjd3(model_v2)
@@ -27,6 +28,7 @@
 #' # Convert only a specification object
 #' spec_v2 <- RJDemetra::regarima_spec_tramoseats()
 #' spec_v3 <- as_rjd3(spec_v2)
+#' }
 #' @export
 as_rjd3 <- function(x, new_spec = NULL,...){
   UseMethod("as_rjd3")

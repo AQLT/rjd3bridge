@@ -26,11 +26,11 @@
 #' @importFrom RJDemetra regarima_spec_x13
 #' @importFrom RJDemetra regarima_spec_tramoseats
 #' @examplesIf rjd3jars::check_java_version(silent = TRUE)
+#' \donttest{
 #' y <- rjd3toolkit::ABS$X0.2.09.10.M
 #' model_v3 <- rjd3x13::x13(y)
 #' model_v2 <- as_rjd2(model_v3)
 #'
-#' \donttest{
 #' # Specify the modelling context with user-defined variables
 #' regs_td <- rjd3toolkit::td(
 #'   s = y,
