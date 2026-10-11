@@ -1,0 +1,110 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(rjd3bridge)
+```
+
+# rjd3bridge
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+`rjd3bridge` is an R package designed to bridge the gap between **RJDemetra** (based on JDemetra+ version 2) and the modern **`rjd3`** package suite (`rjd3x13` and `rjd3tramoseats`, based on JDemetra+ version 3).
+
+It provides bidirectional conversion tools (`as_rjd2()` and `as_rjd3()` functions) to seamlessly translate seasonal adjustment specifications and fitted model objects across both ecosystem versions without needing to rewrite custom configurations from scratch.
+
+## Installation
+
+To install the developpment version:
+
+- From [r-universe](https://aqlt.r-universe.dev/rjd3bridge):
+
+```{r, echo = TRUE, eval = FALSE}
+install.packages('rjd3bridge', repos = c('https://aqlt.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
+- From GitHub:
+
+```{r, echo = TRUE, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("AQLT/rjd3bridge")
+```
+
+
+## Examples
+
+### Converting RJDemetra (v2) to rjd3 (v3)
+
+
+```{r v2tov3}
+library(rjd3bridge)
+y <- RJDemetra::ipi_c_eu[, "FR"]
+model_v2 <- RJDemetra::x13(y, spec = "RSA5c")
+model_v3 <- as_rjd3(model_v2)
+
+# Convert only a specification object
+spec_v2 <- RJDemetra::x13_spec("RSA5c")
+spec_v3 <- as_rjd3(spec_v2)
+```
+
+
+### Converting rjd3 (v3) back to RJDemetra (v2)
+
+
+```{r v3tov2}
+library(rjd3bridge)
+y <- rjd3toolkit::ABS$X0.2.09.10.M
+model_v3 <- rjd3x13::x13(y)
+model_v2 <- as_rjd2(model_v3)
+```
+
+The `modelling_context` has to be provided if the specification contains user-defined variables.
+Otherwise, the conversion will be complete:
+
+```{r v3tov2-context, warning=FALSE}
+library(rjd3bridge)
+y <- rjd3toolkit::ABS$X0.2.09.10.M
+regs_td <- rjd3toolkit::td(
+  s = y,
+  groups = c(1, 2, 0, 4, 5, 6, 3),
+  contrasts = TRUE
+)
+
+variables <- list(r = list(
+  Monday = regs_td[, 1],
+  Tuesday = regs_td[, 2],
+  Wednesday = regs_td[, 3],
+  Thursday = regs_td[, 4],
+  Friday = regs_td[, 5],
+  Saturday = regs_td[, 6]
+))
+my_context <- rjd3toolkit::modelling_context(variables = variables)
+spec <- rjd3tramoseats::tramoseats_spec() |> 
+  rjd3toolkit::set_tradingdays(
+  option = "UserDefined",
+  uservariable = c("r.Monday", "r.Tuesday", "r.Wednesday",
+                   "r.Thursday", "r.Friday", "r.Saturday"),
+  test = "None"
+)
+model_v3 <- rjd3tramoseats::tramoseats(y, spec, my_context)
+model_v2 <- as_rjd2(model_v3, context = my_context)
+```
+
+For preprocessing models (RegARIMA or TRAMO), the input time series `y` must be provided to the conversion function.
+Otherwise the start date of the time series will default to year 1, which may lead to incorrect results (e.g., for outliers).
+
+```{r v3tov2-preprocessing}
+model_v3 <- rjd3tramoseats::tramo(y)
+as_rjd2(model_v3)
+as_rjd2(model_v3, y = y)
+```
