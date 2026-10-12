@@ -14,7 +14,7 @@
 #' @param specification The specification of the seasonal adjustment model to use for the conversion.
 #' Can be `"estimation_spec"` (the default, specification used to estimate the model),
 #' or `"result_spec"` (the specification used to produce the final results).
-#' @param ... Additional arguments passed to specific methods.
+#' @inheritParams as_rjd3
 #'
 #' @details
 #' The parameters `ub1` and `ub2` are not translated since it seems to have a different convention between versions.
@@ -291,7 +291,7 @@ var_in_context <- function(var, context = NULL){
     return(NULL)
   }
   context_var <- context$variables
-  split <- strsplit(var, split = "\\.")
+  split <- strsplit(var, split = "\\.", fixed = TRUE)
   sapply(split, function(x){
     !is.null(context_var[[x[1]]][[x[2]]])
   })
@@ -304,7 +304,7 @@ get_var_in_context <- function(var, context = NULL){
     return(NULL)
   }
   context_var <- context$variables
-  split <- strsplit(var, split = "\\.")
+  split <- strsplit(var, split = "\\.", fixed = TRUE)
   all_vars <-  lapply(split, function(x){
     context_var[[x[1]]][[x[2]]]
   })
