@@ -103,10 +103,8 @@ a different convention between versions.
 ## Examples
 
 ``` r
-# \donttest{
-y <- rjd3toolkit::ABS$X0.2.09.10.M
-model_v3 <- rjd3x13::x13(y)
-model_v2 <- as_rjd2(model_v3)
+spec_v3 <- rjd3x13::x13_spec()
+spec_v2 <- as_rjd2(spec_v3)
 
 # Specify the modelling context with user-defined variables
 regs_td <- rjd3toolkit::td(
@@ -114,6 +112,7 @@ regs_td <- rjd3toolkit::td(
   groups = c(1, 2, 0, 4, 5, 6, 3),
   contrasts = TRUE
 )
+#> Error: object 'y' not found
 
 variables <- list(r = list(
   Monday = regs_td[, 1],
@@ -123,21 +122,23 @@ variables <- list(r = list(
   Friday = regs_td[, 5],
   Saturday = regs_td[, 6]
 ))
-my_context <- rjd3toolkit::modelling_context(variables = variables)
-spec <- rjd3tramoseats::tramoseats_spec() |>
+#> Error: object 'regs_td' not found
+context <- rjd3toolkit::modelling_context(variables = variables)
+#> Error: object 'variables' not found
+spec_v3 <- rjd3tramoseats::tramoseats_spec() |>
   rjd3toolkit::set_tradingdays(
     option = "UserDefined",
     uservariable = c("r.Monday", "r.Tuesday", "r.Wednesday",
                      "r.Thursday", "r.Friday", "r.Saturday"),
     test = "None"
   )
-model_v3 <- rjd3tramoseats::tramoseats(y, spec, my_context)
-model_v2 <- as_rjd2(model_v3, context = my_context)
-#> Warning: With tradingdays.option = "UserDefined", the parameters tradingdays.leapyear and tradingdays.stocktd are ignored.
-
+spec_v2 <- as_rjd2(spec_v3, context = context)
+#> Error: object 'context' not found
+# \donttest{
 # For preprocessing models (RegARIMA or TRAMO),
 # the input time series `y` should be provided
 # to avoid defaulting the start date of the time series to year 1
+y <- rjd3toolkit::ABS$X0.2.09.10.M
 model_v3 <- rjd3tramoseats::tramo(y)
 as_rjd2(model_v3)
 #> y = regression model + arima (0, 1, 2, 0, 1, 1)

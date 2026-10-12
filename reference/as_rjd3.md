@@ -60,13 +60,14 @@ a different convention between versions.
 ## Examples
 
 ``` r
-# \donttest{
-y <- RJDemetra::ipi_c_eu[, "FR"]
-model_v2 <- RJDemetra::x13(y, spec = "RSA5c")
-model_v3 <- as_rjd3(model_v2)
-
 # Convert only a specification object
 spec_v2 <- RJDemetra::regarima_spec_tramoseats()
 spec_v3 <- as_rjd3(spec_v2)
+
+# \donttest{
+# Convert a full seasonal adjustment model
+y <- RJDemetra::ipi_c_eu[, "FR"]
+model_v2 <- RJDemetra::x13(y, spec = "RSA5c")
+model_v3 <- as_rjd3(model_v2)
 # }
 ```
