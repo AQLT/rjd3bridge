@@ -1,6 +1,6 @@
 Package: rjd3bridge
 Type: Package
-Title: Bridge Between 'RJDemetra' (v2) and 'rjd3' (v3)
+Title: Bridge Between 'RJDemetra' (V2) and 'rjd3' (V3)
 Version: 0.1.0
 Authors@R: c(
   person("Alain", "Quartier-la-Tente", role = c("aut", "cre", "cph"),
@@ -20,6 +20,8 @@ Imports:
   rjd3x13 (>= 3.3.0),
   rjd3tramoseats (>= 3.3.0),
   rjd3jars (>= 0.0.5)
+URL: https://github.com/AQLT/rjd3bridge, https://aqlt.github.io/rjd3bridge/
+BugReports: https://github.com/AQLT/rjd3bridge/issues
 SystemRequirements: Java (>= 17)
 License: EUPL
 Encoding: UTF-8
