@@ -1,8 +1,8 @@
 # Convert 'rjd3' Objects to 'RJDemetra' (v2) Format
 
 Converts seasonal adjustment models, outputs, or specifications from the
-modern 'rjd3' ecosystem (JDemetra+ v3) back to legacy 'RJDemetra'
-(JDemetra+ v2) objects for backward compatibility and legacy reporting
+modern 'rjd3' ecosystem ('JDemetra+' v3) back to legacy 'RJDemetra'
+('JDemetra+' v2) objects for backward compatibility and legacy reporting
 workflows.
 
 ## Usage
