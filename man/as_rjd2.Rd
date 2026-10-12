@@ -76,7 +76,7 @@ An equivalent object compatible with the 'RJDemetra' package (v2 structure).
 }
 \description{
 Converts seasonal adjustment models, outputs, or specifications from the
-modern 'rjd3' ecosystem (JDemetra+ v3) back to legacy 'RJDemetra' (JDemetra+ v2)
+modern 'rjd3' ecosystem ('JDemetra+' v3) back to legacy 'RJDemetra' ('JDemetra+' v2)
 objects for backward compatibility and legacy reporting workflows.
 }
 \details{

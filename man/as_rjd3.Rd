@@ -37,8 +37,8 @@ A list with two elements:
 }
 \description{
 Converts seasonal adjustment models, outputs, or specification objects
-from legacy 'RJDemetra' (JDemetra+ v2) to the modern 'rjd3' ecosystem
-(such as packages \code{rjd3x13} or \code{rjd3tramoseats} for JDemetra+ v3).
+from legacy 'RJDemetra' ('JDemetra+' v2) to the modern 'rjd3' ecosystem
+(such as packages \code{rjd3x13} or \code{rjd3tramoseats} for 'JDemetra+' v3).
 }
 \details{
 The parameters \code{ub1} and \code{ub2} are not translated since it seems to have a different convention between versions.

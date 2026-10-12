@@ -2,8 +2,8 @@
 #'
 #' @description
 #' Converts seasonal adjustment models, outputs, or specification objects
-#' from legacy 'RJDemetra' (JDemetra+ v2) to the modern 'rjd3' ecosystem
-#' (such as packages `rjd3x13` or `rjd3tramoseats` for JDemetra+ v3).
+#' from legacy 'RJDemetra' ('JDemetra+' v2) to the modern 'rjd3' ecosystem
+#' (such as packages `rjd3x13` or `rjd3tramoseats` for 'JDemetra+' v3).
 #'
 #' @param x An object from the 'RJDemetra' package (v2, e.g., of class `SA`, `SA_spec`).
 #' @param new_spec An optional specification object from the 'rjd3' ecosystem (v3) to be used as a base for conversion.
@@ -200,11 +200,11 @@ as_rjd3.regarima_spec <- function(x, new_spec = NULL, ...){
     }
   }
   regarima <- x
-  span <- regarima$span #OK
-  estimate <- get_final(regarima$estimate) #OK
-  outliers <- get_final(regarima$outliers)#OK
-  automdl <- get_final(regarima$arima$specification) #OK
-  arimacoef <- get_final(regarima$arima["coefficients"]) #OK
+  span <- regarima$span
+  estimate <- get_final(regarima$estimate)
+  outliers <- get_final(regarima$outliers)
+  automdl <- get_final(regarima$arima$specification)
+  arimacoef <- get_final(regarima$arima["coefficients"])
   if (all (is.na(arimacoef))){
     arimacoef <- list(Value = NA, coef.type = NA)
   }
@@ -214,9 +214,9 @@ as_rjd3.regarima_spec <- function(x, new_spec = NULL, ...){
   udef.var <- get_final(regarima$regression$userdef["variables"])
   udef.spec <- get_final(regarima$regression$userdef$specification)
 
-  td <- get_final(regarima$regression$trading.days)#OK
-  easter <- get_final(regarima$regression$easter) #OK
-  transform <- get_final(regarima$transform) #OK
+  td <- get_final(regarima$regression$trading.days)
+  easter <- get_final(regarima$regression$easter)
+  transform <- get_final(regarima$transform)
 
 
   new_spec <- rjd3toolkit::set_automodel(
@@ -234,7 +234,7 @@ as_rjd3.regarima_spec <- function(x, new_spec = NULL, ...){
     mixed = null2NA(automdl$automdl.mixed),
     balanced = null2NA(automdl$automdl.balanced), #X
     amicompare = null2NA(automdl$compare)
-  ) #OK
+  )
   if (!automdl$enabled) {
     new_spec <- rjd3toolkit::set_arima(
       new_spec,
@@ -247,14 +247,14 @@ as_rjd3.regarima_spec <- function(x, new_spec = NULL, ...){
       bq = automdl$arima.bq,
       coef = arimacoef$Value,
       coef.type = arimacoef$Type
-    ) #OK
+    )
   }
 
 
   new_spec <- rjd3toolkit::set_basic(
     new_spec,
     preliminary.check = estimate$preliminary.check
-  ) #OK
+  )
 
   new_spec <- rjd3toolkit::set_tradingdays(
     new_spec,
@@ -265,7 +265,7 @@ as_rjd3.regarima_spec <- function(x, new_spec = NULL, ...){
     test = td$test,
     automatic = null2NA(td$automatic),
     pftd = null2NA(td$pftd)
-  )#OK
+  )
   if (udef.spec$variables){
     if (any(udef.var$description$type == "Calendar")){
       def_cal <- udef.var$description[udef.var$description$type == "Calendar",]
@@ -330,7 +330,7 @@ as_rjd3.regarima_spec <- function(x, new_spec = NULL, ...){
     tc.rate = outliers$tcrate,
     method = null2NA(outliers$method),
     eml.est = null2NA(outliers$eml)
-  ) #OK
+  )
   if (!outliers$enabled) {
     new_spec <- rjd3toolkit::set_outlier(
       new_spec,
@@ -343,7 +343,7 @@ as_rjd3.regarima_spec <- function(x, new_spec = NULL, ...){
     fun = transform$tfunction,
     adjust = null2NA(transform$adjust),
     aicdiff = null2NA(transform$aicdiff)
-  )#OK
+  )
 
   if (!all(is.na(udef.out))){
     # User-defined outliers
@@ -431,175 +431,4 @@ as_rjd3.benchmarking_spec <- function(x, new_spec, ...){
   new_spec
 }
 
-# as_rjd3_preprocessing_spec <- function(x, new_spec = NULL){
-#   if (is.null(new_spec)) {
-#     if (inherits(x, "X13")) {
-#       new_spec <- rjd3x13::regarima_spec()
-#     } else {
-#       new_spec <- rjd3tramoseats::tramo_spec()
-#     }
-#   }
-#   regarima <- x
-#   span <- regarima$span #OK
-#   estimate <- get_final(regarima$estimate) #OK
-#   outliers <- get_final(regarima$outliers)#OK
-#   automdl <- get_final(regarima$arima$specification) #OK
-#   arimacoef <- get_final(regarima$arima["coefficients"]) #OK
-#   if (all (is.na(arimacoef))){
-#     arimacoef <- list(Value = NA, coef.type = NA)
-#   }
-#
-#   forecast <- get_final(regarima$forecast)
-#   udef.out <- get_final(regarima$regression$userdef["outliers"])
-#   udef.var <- get_final(regarima$regression$userdef["variables"])
-#   udef.spec <- get_final(regarima$regression$userdef$specification)
-#
-#   td <- get_final(regarima$regression$trading.days)#OK
-#   easter <- get_final(regarima$regression$easter) #OK
-#   transform <- get_final(regarima$transform) #OK
-#
-#
-#   new_spec <- rjd3toolkit::set_automodel(
-#     new_spec,
-#     enabled = automdl$enabled,
-#     acceptdefault = automdl$automdl.acceptdefault,
-#     cancel = automdl$automdl.cancel,
-#     # ub1 = automdl$automdl.ub1,
-#     # ub2 = automdl$automdl.ub2,
-#     reducecv = automdl$automdl.reducecv,
-#     ljungboxlimit = automdl$automdl.ljungboxlimit,
-#     tsig = automdl$automdl.armalimit,
-#     ubfinal = automdl$automdl.ubfinal,
-#     checkmu = NA,
-#     mixed = null2NA(automdl$automdl.mixed),
-#     balanced = null2NA(automdl$automdl.balanced), #X
-#     amicompare = null2NA(automdl$compare)
-#   ) #OK
-#   if (!automdl$enabled) {
-#     new_spec <- rjd3toolkit::set_arima(
-#       new_spec,
-#       mean = ifelse(automdl$arima.mu, NA, 0),
-#       p = automdl$arima.p,
-#       d = automdl$arima.d,
-#       q = automdl$arima.q,
-#       bp = automdl$arima.bp,
-#       bd = automdl$arima.bd,
-#       bq = automdl$arima.bq,
-#       coef = arimacoef$Value,
-#       coef.type = arimacoef$Type
-#     ) #OK
-#   }
-#
-#
-#   new_spec <- rjd3toolkit::set_basic(
-#     new_spec,
-#     preliminary.check = estimate$preliminary.check
-#   ) #OK
-#
-#   new_spec <- rjd3toolkit::set_tradingdays(
-#     new_spec,
-#     option = td$option,
-#     autoadjust = null2NA(td$autoadjust),
-#     leapyear = td$leapYear,
-#     stocktd = td$stocktd,
-#     test = td$test,
-#     automatic = null2NA(td$automatic),
-#     pftd = null2NA(td$pftd)
-#   )#OK
-#   if (udef.spec$variables){
-#     if (any(udef.var$description$type == "Calendar")){
-#       def_cal <- udef.var$description[udef.var$description$type == "Calendar",]
-#       # user-def calendar
-#       nom_var_td <- rownames(def_cal)
-#       new_spec <- rjd3toolkit::set_tradingdays(
-#         new_spec,
-#         uservariable = paste("r.", nom_var_td)
-#       )
-#       if (!all(is.na(def_cal$coeff))){
-#         new_spec <- rjd3toolkit::set_tradingdays(
-#           new_spec,
-#           coef = def_cal$coeff,
-#           coef.type = "fixed"
-#         )
-#       }
-#     }
-#     if (any(udef.var$description$type != "Calendar")){
-#       # user-def regressors
-#       o_def_var <- udef.var$description[udef.var$description$type != "Calendar",]
-#       new_spec <- rjd3toolkit::add_usrdefvar(
-#         new_spec,
-#         name = rownames(o_def_var),
-#         coef = coeff_na(o_def_var$coeff),
-#         regeffect = o_def_var$type
-#       )
-#
-#     }
-#
-#   }
-#
-#   new_spec <- rjd3toolkit::set_easter(
-#     new_spec,
-#     enabled = null2NA(easter$enabled),
-#     julian = easter$julian,
-#     duration = easter$duration,
-#     test = easter$test,
-#     type = null2NA(easter$type)
-#   )
-#
-#   new_spec <- rjd3toolkit::set_estimate(
-#     new_spec,
-#     type = span["estimate","type"],
-#     d0 = span_d(span["estimate", "d0"]),
-#     d1 = span_d(span["estimate", "d1"]),
-#     n0 = span["estimate", "n0"],
-#     n1 = span["estimate", "n1"],
-#     tol = estimate$tolerance,
-#     exact.ml = null2NA(estimate$exact_ml),
-#     unit.root.limit = null2NA(estimate$urfinal)
-#   )
-#   new_spec <- rjd3toolkit::set_outlier(
-#     new_spec,
-#     span.type = span["outlier","type"],
-#     d0 = span_d(span["outlier", "d0"]),
-#     d1 = span_d(span["outlier", "d1"]),
-#     n0 = span["outlier", "n0"],
-#     n1 = span["outlier", "n1"],
-#     critical.value = outliers$cv,
-#     outliers.type = c("AO", "TC", "LS", "SO")[unlist(outliers[,c("ao", "tc", "ls", "so")])],
-#     tc.rate = outliers$tcrate,
-#     method = null2NA(outliers$method),
-#     eml.est = null2NA(outliers$eml)
-#   ) #OK
-#   if (!outliers$enabled) {
-#     new_spec <- rjd3toolkit::set_outlier(
-#       new_spec,
-#       outliers.type = NULL,
-#     )
-#   }
-#
-#   new_spec <- rjd3toolkit::set_transform(
-#     new_spec,
-#     fun = transform$tfunction,
-#     adjust = transform$adjust,
-#     aicdiff = null2NA(transform$aicdiff),
-#   )#OK
-#
-#   if (!all(is.na(udef.out))){
-#     # User-defined outliers
-#     new_spec <- rjd3toolkit::add_outlier(
-#       new_spec,
-#       type = udef.out$type,
-#       date = udef.out$date,
-#       coef = coeff_na(udef.out$coef)
-#     )
-#   }
-#   if (all(is.na(udef.var$series))){
-#     context <- rjd3toolkit::modelling_context()
-#   } else {
-#     context <- rjd3toolkit::modelling_context(
-#       variables = list(r = udef.var$series)
-#     )
-#   }
-#   return(list(context = context, spec = new_spec))
-# }
 

@@ -2,10 +2,10 @@
 #' @export
 as_rjd2.JD3_X13_SPEC <- function(x, context = NULL, ...) {
   basic_spec <- x$regarima$basic
-  transform_spec <- x$regarima$transform # OK
+  transform_spec <- x$regarima$transform
   outlier_spec <- x$regarima$outlier
   outlier_spec_span <- as_rjd2(outlier_spec$span)
-  if (length(outlier_spec$outliers) == 0) { # different TS
+  if (length(outlier_spec$outliers) == 0) {
     outliers.enabled <- FALSE
     outliers_types <- NULL
   } else {
@@ -13,19 +13,19 @@ as_rjd2.JD3_X13_SPEC <- function(x, context = NULL, ...) {
     outliers_types <- sapply(outlier_spec$outliers, function(x) x[["type"]])
   }
 
-  automodel_spec <- x$regarima$automodel #OK
-  arima_spec <- as_rjd2(x$regarima$arima, automdl = automodel_spec$enabled) #OK
+  automodel_spec <- x$regarima$automodel
+  arima_spec <- as_rjd2(x$regarima$arima, automdl = automodel_spec$enabled)
   regression_spec <- x$regarima$regression
   ud_outlier <- as_rjd2_ud_outliers(regression_spec$outliers)
   ud_var <- as_rjd2_ud_var(regression_spec, context = context)
-  td_spec <- regression_spec$td # OK
-  easter_spec <- regression_spec$easter #OK
-  estimate_spec <- x$regarima$estimate #OK
-  estimate_span <- as_rjd2(estimate_spec$span) #OKs
+  td_spec <- regression_spec$td
+  easter_spec <- regression_spec$easter
+  estimate_spec <- x$regarima$estimate
+  estimate_span <- as_rjd2(estimate_spec$span)
 
 
-  x11_spec <- x$x11 #OK
-  benchmarking_spec <- x$benchmarking #OK
+  x11_spec <- x$x11
+  benchmarking_spec <- x$benchmarking
 
   RJDemetra::x13_spec(
     preliminary.check = basic_spec$preliminaryCheck,
@@ -71,7 +71,7 @@ as_rjd2.JD3_X13_SPEC <- function(x, context = NULL, ...) {
       match = td_spec$test
     ),
     easter.enabled = easter_spec$type == "STANDARD",
-    easter.julian = easter_spec$type == "JULIAN", # different tRAMO
+    easter.julian = easter_spec$type == "JULIAN",
     easter.duration = easter_spec$duration,
     easter.test = switch2(
       char = c("Add", "Remove", "None"),
@@ -88,13 +88,13 @@ as_rjd2.JD3_X13_SPEC <- function(x, context = NULL, ...) {
     outlier.tc = "TC" %in% outliers_types,
     outlier.ls = "LS" %in% outliers_types,
     outlier.so = "SO" %in% outliers_types,
-    outlier.usedefcv = outlier_spec$defva == 0, # outlier_spec$va TS
-    outlier.cv = ifelse(outlier_spec$defva == 0, NA_integer_, outlier_spec$defva), # outlier_spec$va TS
+    outlier.usedefcv = outlier_spec$defva == 0,
+    outlier.cv = ifelse(outlier_spec$defva == 0, NA_integer_, outlier_spec$defva),
     outlier.method = switch2(
       char = c("AddOne", "AddAll"),
       match = outlier_spec$method
     ),
-    outlier.tcrate = outlier_spec$monthlytcrate, # outlier_spec$tcrate TS
+    outlier.tcrate = outlier_spec$monthlytcrate,
     automdl.enabled = automodel_spec$enabled,
     automdl.acceptdefault = automodel_spec$acceptdef,
     automdl.cancel = automodel_spec$cancel,
@@ -153,10 +153,10 @@ as_rjd2.JD3_X13_SPEC <- function(x, context = NULL, ...) {
 #' @export
 as_rjd2.JD3_REGARIMA_SPEC <- function(x, context = NULL, ...) {
   basic_spec <- x$basic
-  transform_spec <- x$transform # OK
+  transform_spec <- x$transform
   outlier_spec <- x$outlier
   outlier_spec_span <- as_rjd2(outlier_spec$span)
-  if (length(outlier_spec$outliers) == 0) { # different TS
+  if (length(outlier_spec$outliers) == 0) {
     outliers.enabled <- FALSE
     outliers_types <- NULL
   } else {
@@ -164,19 +164,19 @@ as_rjd2.JD3_REGARIMA_SPEC <- function(x, context = NULL, ...) {
     outliers_types <- sapply(outlier_spec$outliers, function(x) x[["type"]])
   }
 
-  automodel_spec <- x$automodel #OK
-  arima_spec <- as_rjd2(x$arima, automdl = automodel_spec$enabled) #OK
+  automodel_spec <- x$automodel
+  arima_spec <- as_rjd2(x$arima, automdl = automodel_spec$enabled)
   regression_spec <- x$regression
   ud_outlier <- as_rjd2_ud_outliers(regression_spec$outliers)
   ud_var <- as_rjd2_ud_var(regression_spec, context = context)
-  td_spec <- regression_spec$td # OK
-  easter_spec <- regression_spec$easter #OK
-  estimate_spec <- x$estimate #OK
-  estimate_span <- as_rjd2(estimate_spec$span) #OKs
+  td_spec <- regression_spec$td
+  easter_spec <- regression_spec$easter
+  estimate_spec <- x$estimate
+  estimate_span <- as_rjd2(estimate_spec$span)
 
 
-  x11_spec <- x$x11 #OK
-  benchmarking_spec <- x$benchmarking #OK
+  x11_spec <- x$x11
+  benchmarking_spec <- x$benchmarking
 
   RJDemetra::regarima_spec_x13(
     preliminary.check = basic_spec$preliminaryCheck,
@@ -222,7 +222,7 @@ as_rjd2.JD3_REGARIMA_SPEC <- function(x, context = NULL, ...) {
       match = td_spec$test
     ),
     easter.enabled = easter_spec$type == "STANDARD",
-    easter.julian = easter_spec$type == "JULIAN", # different tRAMO
+    easter.julian = easter_spec$type == "JULIAN",
     easter.duration = easter_spec$duration,
     easter.test = switch2(
       char = c("Add", "Remove", "None"),
@@ -239,13 +239,13 @@ as_rjd2.JD3_REGARIMA_SPEC <- function(x, context = NULL, ...) {
     outlier.tc = "TC" %in% outliers_types,
     outlier.ls = "LS" %in% outliers_types,
     outlier.so = "SO" %in% outliers_types,
-    outlier.usedefcv = outlier_spec$defva == 0, # outlier_spec$va TS
-    outlier.cv = ifelse(outlier_spec$defva == 0, NA_integer_, outlier_spec$defva), # outlier_spec$va TS
+    outlier.usedefcv = outlier_spec$defva == 0,
+    outlier.cv = ifelse(outlier_spec$defva == 0, NA_integer_, outlier_spec$defva),
     outlier.method = switch2(
       char = c("AddOne", "AddAll"),
       match = outlier_spec$method
     ),
-    outlier.tcrate = outlier_spec$monthlytcrate, # outlier_spec$tcrate TS
+    outlier.tcrate = outlier_spec$monthlytcrate,
     automdl.enabled = automodel_spec$enabled,
     automdl.acceptdefault = automodel_spec$acceptdef,
     automdl.cancel = automodel_spec$cancel,

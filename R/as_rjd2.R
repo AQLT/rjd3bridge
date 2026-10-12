@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Converts seasonal adjustment models, outputs, or specifications from the
-#' modern 'rjd3' ecosystem (JDemetra+ v3) back to legacy 'RJDemetra' (JDemetra+ v2)
+#' modern 'rjd3' ecosystem ('JDemetra+' v3) back to legacy 'RJDemetra' ('JDemetra+' v2)
 #' objects for backward compatibility and legacy reporting workflows.
 #'
 #' @param x An object from the 'rjd3' ecosystem (e.g., from packages `rjd3x13`

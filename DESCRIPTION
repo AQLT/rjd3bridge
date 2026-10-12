@@ -8,9 +8,9 @@ Authors@R: c(
                  comment = c(ORCID = "0000-0001-7890-3857"))
   )
 Description: Provides bidirectional tools to convert seasonal adjustment 
-    models and specifications between 'RJDemetra' (JDemetra+ v2) 
-    and the 'rjd3' ecosystem (JDemetra+ v3). Facilitates workflow migration 
-    and backward compatibility analysis.
+    models and specifications between 'RJDemetra' ('JDemetra+' v2) 
+    and the 'rjd3' ecosystem ('JDemetra+' v3, packages 'rjd3x13' and 'rjd3tramoseats'). 
+    Facilitates workflow migration and backward compatibility analysis.
 Depends:
   R (>= 4.1.0)
 Imports:

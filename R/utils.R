@@ -48,23 +48,6 @@ get_final <- function(x){
 }
 #' @noRd
 #' @keywords internal
-# get_final <- function(x){
-#   if (is.data.frame(x)){
-#     if (nrow(x) == 1) {
-#       x
-#     } else {
-#       x["Final", ]
-#     }
-#   } else if (is.list(x)){
-#     if (!is.list(x[[1]]) || is.null(x[[1]]$Final)) {
-#       x[[1]]
-#     } else {
-#       x[[1]]$Final
-#     }
-#   }
-# }
-#' @noRd
-#' @keywords internal
 add_class <- function(x, class){
   if (!is.null(class(x))) {
     class(x) <- c(class, class(x))

@@ -2,23 +2,23 @@
 #' @export
 as_rjd2.JD3_TRAMOSEATS_SPEC <- function(x, context = NULL, ...) {
   basic_spec <- x$tramo$basic
-  transform_spec <- x$tramo$transform # OK
+  transform_spec <- x$tramo$transform
   outlier_spec <- x$tramo$outlier
   outlier_spec_span <- as_rjd2(outlier_spec$span)
 
-  automodel_spec <- x$tramo$automodel #OK
-  arima_spec <- as_rjd2(x$tramo$arima, automdl = automodel_spec$enabled) #OK
+  automodel_spec <- x$tramo$automodel
+  arima_spec <- as_rjd2(x$tramo$arima, automdl = automodel_spec$enabled)
   regression_spec <- x$tramo$regression
   ud_outlier <- as_rjd2_ud_outliers(regression_spec$outliers)
   ud_var <- as_rjd2_ud_var(regression_spec, context = context)
-  td_spec <- regression_spec$td # OK
-  easter_spec <- regression_spec$easter #OK
-  estimate_spec <- x$tramo$estimate #OK
-  estimate_span <- as_rjd2(estimate_spec$span) #OKs
+  td_spec <- regression_spec$td
+  easter_spec <- regression_spec$easter
+  estimate_spec <- x$tramo$estimate
+  estimate_span <- as_rjd2(estimate_spec$span)
 
 
-  seats_spec <- x$seats #OK
-  benchmarking_spec <- x$benchmarking #OK
+  seats_spec <- x$seats
+  benchmarking_spec <- x$benchmarking
 
   RJDemetra::tramoseats_spec(
     preliminary.check = basic_spec$preliminaryCheck,
@@ -78,9 +78,9 @@ as_rjd2.JD3_TRAMOSEATS_SPEC <- function(x, context = NULL, ...) {
     outlier.tc = outlier_spec$tc,
     outlier.ls = outlier_spec$ls,
     outlier.so = outlier_spec$so,
-    outlier.usedefcv = outlier_spec$va == 0, # outlier_spec$va TS
-    outlier.cv = ifelse(outlier_spec$va == 0, NA_integer_, outlier_spec$va), # outlier_spec$va TS
-    outlier.tcrate = outlier_spec$tcrate, # outlier_spec$tcrate TS
+    outlier.usedefcv = outlier_spec$va == 0,
+    outlier.cv = ifelse(outlier_spec$va == 0, NA_integer_, outlier_spec$va),
+    outlier.tcrate = outlier_spec$tcrate,
     automdl.enabled = automodel_spec$enabled,
     automdl.acceptdefault = automodel_spec$acceptdef,
     automdl.cancel = automodel_spec$cancel,
@@ -129,19 +129,19 @@ as_rjd2.JD3_TRAMOSEATS_SPEC <- function(x, context = NULL, ...) {
 #' @export
 as_rjd2.JD3_TRAMO_SPEC <- function(x, context = NULL, ...) {
   basic_spec <- x$basic
-  transform_spec <- x$transform # OK
+  transform_spec <- x$transform
   outlier_spec <- x$outlier
   outlier_spec_span <- as_rjd2(outlier_spec$span)
 
-  automodel_spec <- x$automodel #OK
-  arima_spec <- as_rjd2(x$arima, automdl = automodel_spec$enabled) #OK
+  automodel_spec <- x$automodel
+  arima_spec <- as_rjd2(x$arima, automdl = automodel_spec$enabled)
   regression_spec <- x$regression
   ud_outlier <- as_rjd2_ud_outliers(regression_spec$outliers)
   ud_var <- as_rjd2_ud_var(regression_spec, context = context)
-  td_spec <- regression_spec$td # OK
-  easter_spec <- regression_spec$easter #OK
-  estimate_spec <- x$estimate #OK
-  estimate_span <- as_rjd2(estimate_spec$span) #OKs
+  td_spec <- regression_spec$td
+  easter_spec <- regression_spec$easter
+  estimate_spec <- x$estimate
+  estimate_span <- as_rjd2(estimate_spec$span)
 
 
   RJDemetra::regarima_spec_tramoseats(
@@ -202,9 +202,9 @@ as_rjd2.JD3_TRAMO_SPEC <- function(x, context = NULL, ...) {
     outlier.tc = outlier_spec$tc,
     outlier.ls = outlier_spec$ls,
     outlier.so = outlier_spec$so,
-    outlier.usedefcv = outlier_spec$va == 0, # outlier_spec$va TS
-    outlier.cv = ifelse(outlier_spec$va == 0, NA_integer_, outlier_spec$va), # outlier_spec$va TS
-    outlier.tcrate = outlier_spec$tcrate, # outlier_spec$tcrate TS
+    outlier.usedefcv = outlier_spec$va == 0,
+    outlier.cv = ifelse(outlier_spec$va == 0, NA_integer_, outlier_spec$va),
+    outlier.tcrate = outlier_spec$tcrate,
     automdl.enabled = automodel_spec$enabled,
     automdl.acceptdefault = automodel_spec$acceptdef,
     automdl.cancel = automodel_spec$cancel,
