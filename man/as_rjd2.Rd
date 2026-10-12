@@ -84,10 +84,8 @@ The parameters \code{ub1} and \code{ub2} are not translated since it seems to ha
 }
 \examples{
 \dontshow{if (rjd3jars::check_java_version(silent = TRUE)) withAutoprint(\{ # examplesIf}
-\donttest{
-y <- rjd3toolkit::ABS$X0.2.09.10.M
-model_v3 <- rjd3x13::x13(y)
-model_v2 <- as_rjd2(model_v3)
+spec_v3 <- rjd3x13::x13_spec()
+spec_v2 <- as_rjd2(spec_v3)
 
 # Specify the modelling context with user-defined variables
 regs_td <- rjd3toolkit::td(
@@ -104,20 +102,20 @@ variables <- list(r = list(
   Friday = regs_td[, 5],
   Saturday = regs_td[, 6]
 ))
-my_context <- rjd3toolkit::modelling_context(variables = variables)
-spec <- rjd3tramoseats::tramoseats_spec() |>
+context <- rjd3toolkit::modelling_context(variables = variables)
+spec_v3 <- rjd3tramoseats::tramoseats_spec() |>
   rjd3toolkit::set_tradingdays(
     option = "UserDefined",
     uservariable = c("r.Monday", "r.Tuesday", "r.Wednesday",
                      "r.Thursday", "r.Friday", "r.Saturday"),
     test = "None"
   )
-model_v3 <- rjd3tramoseats::tramoseats(y, spec, my_context)
-model_v2 <- as_rjd2(model_v3, context = my_context)
-
+spec_v2 <- as_rjd2(spec_v3, context = context)
+\donttest{
 # For preprocessing models (RegARIMA or TRAMO),
 # the input time series `y` should be provided
 # to avoid defaulting the start date of the time series to year 1
+y <- rjd3toolkit::ABS$X0.2.09.10.M
 model_v3 <- rjd3tramoseats::tramo(y)
 as_rjd2(model_v3)
 as_rjd2(model_v3, y = y)

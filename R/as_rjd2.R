@@ -26,10 +26,8 @@
 #' @importFrom RJDemetra regarima_spec_x13
 #' @importFrom RJDemetra regarima_spec_tramoseats
 #' @examplesIf rjd3jars::check_java_version(silent = TRUE)
-#' \donttest{
-#' y <- rjd3toolkit::ABS$X0.2.09.10.M
-#' model_v3 <- rjd3x13::x13(y)
-#' model_v2 <- as_rjd2(model_v3)
+#' spec_v3 <- rjd3x13::x13_spec()
+#' spec_v2 <- as_rjd2(spec_v3)
 #'
 #' # Specify the modelling context with user-defined variables
 #' regs_td <- rjd3toolkit::td(
@@ -46,20 +44,20 @@
 #'   Friday = regs_td[, 5],
 #'   Saturday = regs_td[, 6]
 #' ))
-#' my_context <- rjd3toolkit::modelling_context(variables = variables)
-#' spec <- rjd3tramoseats::tramoseats_spec() |>
+#' context <- rjd3toolkit::modelling_context(variables = variables)
+#' spec_v3 <- rjd3tramoseats::tramoseats_spec() |>
 #'   rjd3toolkit::set_tradingdays(
 #'     option = "UserDefined",
 #'     uservariable = c("r.Monday", "r.Tuesday", "r.Wednesday",
 #'                      "r.Thursday", "r.Friday", "r.Saturday"),
 #'     test = "None"
 #'   )
-#' model_v3 <- rjd3tramoseats::tramoseats(y, spec, my_context)
-#' model_v2 <- as_rjd2(model_v3, context = my_context)
-#'
+#' spec_v2 <- as_rjd2(spec_v3, context = context)
+#' \donttest{
 #' # For preprocessing models (RegARIMA or TRAMO),
 #' # the input time series `y` should be provided
 #' # to avoid defaulting the start date of the time series to year 1
+#' y <- rjd3toolkit::ABS$X0.2.09.10.M
 #' model_v3 <- rjd3tramoseats::tramo(y)
 #' as_rjd2(model_v3)
 #' as_rjd2(model_v3, y = y)
@@ -202,8 +200,8 @@ as_rjd2_ud_outliers <- function(x, ...) {
     list(
       enabled = TRUE,
       type = sapply(ud_outlier, function(x) x$code),
-      date = sapply(ud_outlier, function(x) x$pos),
-      coef = sapply(ud_outlier, function(x) null2NA(x$coef))
+      date = sapply(ud_outlier, function(x) as.character(x$pos)),
+      coef = sapply(ud_outlier, function(x) null2NA(x$coef$value))
     )
   }
 }
@@ -291,7 +289,7 @@ var_in_context <- function(var, context = NULL){
     return(NULL)
   }
   context_var <- context$variables
-  split <- strsplit(var, split = "\\.", fixed = TRUE)
+  split <- strsplit(var, split = ".", fixed = TRUE)
   sapply(split, function(x){
     !is.null(context_var[[x[1]]][[x[2]]])
   })
@@ -304,7 +302,7 @@ get_var_in_context <- function(var, context = NULL){
     return(NULL)
   }
   context_var <- context$variables
-  split <- strsplit(var, split = "\\.", fixed = TRUE)
+  split <- strsplit(var, split = ".", fixed = TRUE)
   all_vars <-  lapply(split, function(x){
     context_var[[x[1]]][[x[2]]]
   })
