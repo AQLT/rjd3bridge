@@ -1,0 +1,141 @@
+# rjd3bridge
+
+`rjd3bridge` is an R package designed to bridge the gap between
+**RJDemetra** (based on JDemetra+ version 2) and the modern **`rjd3`**
+package suite (`rjd3x13` and `rjd3tramoseats`, based on JDemetra+
+version 3).
+
+It provides bidirectional conversion tools
+([`as_rjd2()`](https://aqlt.github.io/rjd3bridge/reference/as_rjd2.md)
+and
+[`as_rjd3()`](https://aqlt.github.io/rjd3bridge/reference/as_rjd3.md)
+functions) to seamlessly translate seasonal adjustment specifications
+and fitted model objects across both ecosystem versions without needing
+to rewrite custom configurations from scratch.
+
+## Installation
+
+To install the developpment version:
+
+- From [r-universe](https://aqlt.r-universe.dev/rjd3bridge):
+
+``` r
+
+install.packages('rjd3bridge', repos = c('https://aqlt.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
+- From GitHub:
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("AQLT/rjd3bridge")
+```
+
+## Examples
+
+### Converting RJDemetra (v2) to rjd3 (v3)
+
+``` r
+
+library(rjd3bridge)
+y <- RJDemetra::ipi_c_eu[, "FR"]
+model_v2 <- RJDemetra::x13(y, spec = "RSA5c")
+model_v3 <- as_rjd3(model_v2)
+
+# Convert only a specification object
+spec_v2 <- RJDemetra::x13_spec("RSA5c")
+spec_v3 <- as_rjd3(spec_v2)
+```
+
+### Converting rjd3 (v3) back to RJDemetra (v2)
+
+``` r
+
+library(rjd3bridge)
+y <- rjd3toolkit::ABS$X0.2.09.10.M
+model_v3 <- rjd3x13::x13(y)
+model_v2 <- as_rjd2(model_v3)
+```
+
+The `modelling_context` has to be provided if the specification contains
+user-defined variables. Otherwise, the conversion will be complete:
+
+``` r
+
+library(rjd3bridge)
+y <- rjd3toolkit::ABS$X0.2.09.10.M
+regs_td <- rjd3toolkit::td(
+  s = y,
+  groups = c(1, 2, 0, 4, 5, 6, 3),
+  contrasts = TRUE
+)
+
+variables <- list(r = list(
+  Monday = regs_td[, 1],
+  Tuesday = regs_td[, 2],
+  Wednesday = regs_td[, 3],
+  Thursday = regs_td[, 4],
+  Friday = regs_td[, 5],
+  Saturday = regs_td[, 6]
+))
+my_context <- rjd3toolkit::modelling_context(variables = variables)
+spec <- rjd3tramoseats::tramoseats_spec() |> 
+  rjd3toolkit::set_tradingdays(
+  option = "UserDefined",
+  uservariable = c("r.Monday", "r.Tuesday", "r.Wednesday",
+                   "r.Thursday", "r.Friday", "r.Saturday"),
+  test = "None"
+)
+model_v3 <- rjd3tramoseats::tramoseats(y, spec, my_context)
+model_v2 <- as_rjd2(model_v3, context = my_context)
+```
+
+For preprocessing models (RegARIMA or TRAMO), the input time series `y`
+must be provided to the conversion function. Otherwise the start date of
+the time series will default to year 1, which may lead to incorrect
+results (e.g., for outliers).
+
+``` r
+
+model_v3 <- rjd3tramoseats::tramo(y)
+as_rjd2(model_v3)
+#> y = regression model + arima (0, 1, 2, 0, 1, 1)
+#> Log-transformation: yes
+#> Coefficients:
+#>           Estimate Std. Error
+#> Theta(1)   -1.1304      0.047
+#> Theta(2)    0.3088      0.047
+#> BTheta(1)  -0.6523      0.037
+#> 
+#>             Estimate Std. Error
+#> Mean      -3.044e-05          0
+#> Week days -6.643e-04          0
+#> 
+#> 
+#> Residual standard error: 0.00614 on 406 degrees of freedom
+#> Log likelihood =  1510, aic = -1410 aicc = -1409, bic(corrected for length) = -10.11
+as_rjd2(model_v3, y = y)
+#> y = regression model + arima (0, 1, 1, 0, 1, 1)
+#> Log-transformation: yes
+#> Coefficients:
+#>           Estimate Std. Error
+#> Theta(1)   -0.8278      0.028
+#> BTheta(1)  -0.4255      0.045
+#> 
+#>               Estimate Std. Error
+#> Monday      -0.0109445      0.003
+#> Tuesday      0.0048940      0.004
+#> Wednesday    0.0001761      0.003
+#> Thursday     0.0132928      0.004
+#> Friday      -0.0024801      0.004
+#> Saturday     0.0153509      0.004
+#> Leap year    0.0410667      0.010
+#> Easter [6]   0.0503888      0.007
+#> AO (7-2000) -0.1972355      0.030
+#> AO (6-2000)  0.1681679      0.030
+#> 
+#> 
+#> Residual standard error: 0.03616 on 399 degrees of freedom
+#> Log likelihood = 781.4, aic =  4199 aicc =  4199, bic(corrected for length) = -6.464
+```
