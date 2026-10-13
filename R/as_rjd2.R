@@ -29,22 +29,16 @@
 #' spec_v3 <- rjd3x13::x13_spec()
 #' spec_v2 <- as_rjd2(spec_v3)
 #'
+#'
 #' # Specify the modelling context with user-defined variables
+#' y <- rjd3toolkit::ABS$X0.2.09.10.M
 #' regs_td <- rjd3toolkit::td(
 #'   s = y,
 #'   groups = c(1, 2, 0, 4, 5, 6, 3),
 #'   contrasts = TRUE
 #' )
-#'
-#' variables <- list(r = list(
-#'   Monday = regs_td[, 1],
-#'   Tuesday = regs_td[, 2],
-#'   Wednesday = regs_td[, 3],
-#'   Thursday = regs_td[, 4],
-#'   Friday = regs_td[, 5],
-#'   Saturday = regs_td[, 6]
-#' ))
-#' context <- rjd3toolkit::modelling_context(variables = variables)
+#' colnames(regs_td) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+#' context <- rjd3toolkit::modelling_context(variables = list(regs_td))
 #' spec_v3 <- rjd3tramoseats::tramoseats_spec() |>
 #'   rjd3toolkit::set_tradingdays(
 #'     option = "UserDefined",
@@ -57,7 +51,6 @@
 #' # For preprocessing models (RegARIMA or TRAMO),
 #' # the input time series `y` should be provided
 #' # to avoid defaulting the start date of the time series to year 1
-#' y <- rjd3toolkit::ABS$X0.2.09.10.M
 #' model_v3 <- rjd3tramoseats::tramo(y)
 #' as_rjd2(model_v3)
 #' as_rjd2(model_v3, y = y)

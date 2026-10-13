@@ -69,16 +69,8 @@ regs_td <- rjd3toolkit::td(
   groups = c(1, 2, 0, 4, 5, 6, 3),
   contrasts = TRUE
 )
-
-variables <- list(r = list(
-  Monday = regs_td[, 1],
-  Tuesday = regs_td[, 2],
-  Wednesday = regs_td[, 3],
-  Thursday = regs_td[, 4],
-  Friday = regs_td[, 5],
-  Saturday = regs_td[, 6]
-))
-my_context <- rjd3toolkit::modelling_context(variables = variables)
+colnames(regs_td) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+context <- rjd3toolkit::modelling_context(variables = list(regs_td))
 spec <- rjd3tramoseats::tramoseats_spec() |> 
   rjd3toolkit::set_tradingdays(
   option = "UserDefined",
@@ -86,8 +78,8 @@ spec <- rjd3tramoseats::tramoseats_spec() |>
                    "r.Thursday", "r.Friday", "r.Saturday"),
   test = "None"
 )
-model_v3 <- rjd3tramoseats::tramoseats(y, spec, my_context)
-model_v2 <- as_rjd2(model_v3, context = my_context)
+model_v3 <- rjd3tramoseats::tramoseats(y, spec, context)
+model_v2 <- as_rjd2(model_v3, context = context)
 ```
 
 For preprocessing models (RegARIMA or TRAMO), the input time series `y`
