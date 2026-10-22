@@ -1,7 +1,7 @@
 Package: rjd3bridge
 Type: Package
 Title: Bridge Between 'RJDemetra' (V2) and 'rjd3' (V3)
-Version: 0.1.0
+Version: 0.1.0.900
 Authors@R: c(
   person("Alain", "Quartier-la-Tente", role = c("aut", "cre", "cph"),
                  email = "alain.quartier@yahoo.fr",

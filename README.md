@@ -5,6 +5,17 @@
 
 <!-- badges: start -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/rjd3bridge)](https://CRAN.R-project.org/package=rjd3bridge)
+[![CRAN last
+release](https://www.r-pkg.org/badges/last-release/rjd3bridge)](https://cran.r-project.org/package=rjd3bridge)
+[![R universe
+version](https://aqlt.r-universe.dev/badges/rjd3bridge)](https://aqlt.r-universe.dev/rjd3bridge)
+[![CRAN monthly
+downloads](https://cranlogs.r-pkg.org/badges/rjd3bridge?color=lightgrey)](https://cran.r-project.org/package=rjd3bridge)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/rjd3bridge?color=lightgrey)](https://cran.r-project.org/package=rjd3bridge)
+[![R-CMD-check](https://github.com/AQLT/rjd3bridge/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/AQLT/rjd3bridge/actions/workflows/R-CMD-check.yml)
 <!-- badges: end -->
 
 `rjd3bridge` is an R package designed to bridge the gap between
@@ -18,6 +29,13 @@ and fitted model objects across both ecosystem versions without needing
 to rewrite custom configurations from scratch.
 
 ## Installation
+
+To install the release version:
+
+``` r
+# Install release version from CRAN
+install.packages("rjd3bridge")
+```
 
 To install the developpment version:
 
