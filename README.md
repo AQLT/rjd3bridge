@@ -37,7 +37,7 @@ To install the release version:
 install.packages("rjd3bridge")
 ```
 
-To install the developpment version:
+To install the development version:
 
 - From [r-universe](https://aqlt.r-universe.dev/rjd3bridge):
 
