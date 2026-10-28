@@ -22,7 +22,7 @@ Imports:
   rjd3jars (>= 0.0.5)
 URL: https://github.com/AQLT/rjd3bridge, https://aqlt.github.io/rjd3bridge/
 BugReports: https://github.com/AQLT/rjd3bridge/issues
-SystemRequirements: Java (>= 17)
+SystemRequirements: Java (>= 21)
 License: EUPL
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
